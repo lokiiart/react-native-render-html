@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Image, View, Text } from 'react-native';
+import { Image, View, Text, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
+
 
 export default class HTMLImage extends PureComponent {
     constructor (props) {
@@ -81,8 +82,8 @@ export default class HTMLImage extends PureComponent {
 
         if (styleWidth && styleHeight) {
             return this.mounted && this.setState({
-                width: typeof styleWidth === 'string' && styleWidth.search('%') !== -1 ? styleWidth : parseInt(styleWidth, 10),
-                height: typeof styleHeight === 'string' && styleHeight.search('%') !== -1 ? styleHeight : parseInt(styleHeight, 10)
+                width: typeof styleWidth === 'string' && styleWidth.search('%') !== -1 ? styleWidth : parseInt(Dimensions.width*styleWidth, 10),
+                height: typeof styleHeight === 'string' && styleHeight.search('%') !== -1 ? styleHeight : parseInt(Dimensions.height*styleHeight, 10)
             });
         }
         // Fetch image dimensions only if they aren't supplied or if with or height is missing
@@ -106,7 +107,7 @@ export default class HTMLImage extends PureComponent {
         return (
             <Image
               source={source}
-              style={[style, { width: this.state.width, height: this.state.height, resizeMode: 'cover' }]}
+              style={[{ width: this.state.width, height: this.state.height, resizeMode: 'contain' }]}
               {...props}
             />
         );
